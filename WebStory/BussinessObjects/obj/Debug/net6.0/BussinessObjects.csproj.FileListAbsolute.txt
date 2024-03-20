@@ -1,0 +1,13 @@
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\bin\Debug\net6.0\BussinessObjects.deps.json
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\bin\Debug\net6.0\BussinessObjects.dll
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\bin\Debug\net6.0\BussinessObjects.pdb
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.csproj.AssemblyReference.cache
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.AssemblyInfoInputs.cache
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.AssemblyInfo.cs
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.csproj.CoreCompileInputs.cache
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.sourcelink.json
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.dll
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\refint\BussinessObjects.dll
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\BussinessObjects.pdb
+E:\Ky 8\PRN231\PRN231Project\WebStory\BussinessObjects\obj\Debug\net6.0\ref\BussinessObjects.dll
