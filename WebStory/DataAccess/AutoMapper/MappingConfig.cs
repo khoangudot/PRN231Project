@@ -9,8 +9,11 @@ namespace DataAccess.AutoMapper
         public static MapperConfiguration RegisterMaps()
         {
             var mappingConfig = new MapperConfiguration(config =>
-                    config.CreateMap<User, UserDTO>().ReverseMap()
-                ) ;
+            {
+                config.CreateMap<Category, CategoryDTO>().ReverseMap();
+                config.CreateMap<User, UserDTO>().ReverseMap();
+               
+            });
             return mappingConfig;
         }
 
