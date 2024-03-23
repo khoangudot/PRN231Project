@@ -75,11 +75,11 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
 builder.Services.AddTransient<IFavouriteRepository, FavouriteRepository>();
-//builder.Services.AddTransient<IChapterRepository,  ChapterRepository>();
+builder.Services.AddTransient<IChapterRepository,  ChapterRepository>();
 builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 //builder.Services.AddTransient<IImageRepository, ImageRepository>();
 //builder.Services.AddTransient<IRoleRepository, RoleRepository>();
-//builder.Services.AddTransient<IStoryRepository, StoryRepository>();
+builder.Services.AddTransient<IStoryRepository, StoryRepository>();
 //builder.Services.AddTransient<IStoryCategoryRepository, StoryCategoryRepository>();
 
 
