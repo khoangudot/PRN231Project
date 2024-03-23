@@ -1,0 +1,258 @@
+﻿@inject IHttpContextAccessor httpContextAccessor
+@using ObjectModel.Dtos
+@{
+    ViewData["Title"] = "Home";
+    var top4 = ViewBag.Top4 as IEnumerable<StoryDTO>;
+    var topViewDay = ViewBag.TopViewDay as IEnumerable<StoryDTO>;
+    var topViewWeek = ViewBag.TopViewWeek as IEnumerable<StoryDTO>;
+    var topViewMonth = ViewBag.TopViewMonth as IEnumerable<StoryDTO>;
+    var topViewYear = ViewBag.TopViewYear as IEnumerable<StoryDTO>;
+    var top10 = ViewBag.Top10 as IEnumerable<StoryDTO>;
+}
+
+
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="container">
+        <div class="hero__slider owl-carousel">
+
+            <div class="hero__items set-bg" data-setbg="img/hero/hero-1.jpg">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="hero__text">
+                            <div class="label">Adventure</div>
+                            <h2>Fate / Stay Night: Unlimited Blade Works</h2>
+                            <p>After 30 days of travel across the world...</p>
+                            <a href="#">
+                                <span>Read Now</span> <i class="fa fa-angle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero__items set-bg" data-setbg="img/hero/hero-1.jpg">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="hero__text">
+                            <div class="label">Adventure</div>
+                            <h2>Fate / Stay Night: Unlimited Blade Works</h2>
+                            <p>After 30 days of travel across the world...</p>
+                            <a href="#">
+                                <span>Read Now</span> <i class="fa fa-angle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- Hero Section End -->
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="trending__product">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="section-title">
+                                <h4>Trending Now</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="btn__all">
+                                <a href="#" class="primary-btn">
+                                    View All <span class="arrow_right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach (var s in top4)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <a href="/Manga/MangaDetail?storyId=@s.StoryId">
+                                        <div class="product__item__pic set-bg"
+                                         data-setbg="@s.ImageStory">
+                                            <div class="ep">@s.ListOfChapter.Count / ?</div>
+                                            @*<div class="comment">
+                                        <i class="fa fa-comments"></i> 11
+                                        </div>*@
+                                            <div class="view"><i class="fa fa-eye"></i> @s.View</div>
+                                        </div>
+                                    </a>
+                                    <div class="product__item__text">
+                                        <ul>
+                                            <li>@s.IsActive</li>
+                                            <li>Movie</li>
+                                        </ul>
+                                        @if (httpContextAccessor.HttpContext.Session.GetString("token") != null)
+                                        {
+                                            var f = ViewBag.Favourites as IEnumerable<FavouriteDTO>;
+                                            var uid = (int)ViewBag.Uid;
+
+                                            <div class="form-check my-2">
+                                                @if (f.Where(x => x.StoryId == s.StoryId && x.UserId == uid).FirstOrDefault() != null)
+                                                {
+                                                    <input class="form-check-input" type="checkbox" data-story-id="@s.StoryId" id="favorite-checkbox-@s.StoryId" checked>
+                                                    <label class="form-check-label text-white" for="favorite-checkbox-@s.StoryId">
+                                                        Delete to Favorites
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <input class="form-check-input" type="checkbox" data-story-id="@s.StoryId" id="favorite-checkbox-@s.StoryId">
+                                                    <label class="form-check-label text-white" for="favorite-checkbox-@s.StoryId">
+                                                        Add to Favorites
+                                                    </label>
+                                                }
+                                            </div>
+                                        }
+                                        <h5>
+                                            <a href="#">@s.Title - @s.AuthorName</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="popular__product">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            <div class="section-title">
+                                <h4>Popular Shows</h4>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="btn__all">
+                                <a href="#" class="primary-btn">
+                                    View All <span class="arrow_right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @foreach (var s in top10)
+                        {
+                            <div class="col-lg-4 col-md-6 col-sm-6">
+                                <div class="product__item">
+                                    <a href="/Manga/MangaDetail?storyId=@s.StoryId">
+                                        <div class="product__item__pic set-bg"
+                                         data-setbg="@s.ImageStory">
+                                            <div class="ep">@s.ListOfChapter.Count / ?</div>
+                                            @* <div class="comment">
+                                        <i class="fa fa-comments"></i> 11
+                                        </div>*@
+                                            <div class="view"><i class="fa fa-eye"></i> @s.View</div>
+                                        </div>
+                                    </a>
+                                    <div class="product__item__text">
+                                        <ul>
+                                            <li>Active</li>
+                                            <li>Movie</li>
+                                        </ul>
+                                        @if (httpContextAccessor.HttpContext.Session.GetString("token") != null)
+                                        {
+                                            var f = ViewBag.Favourites as IEnumerable<FavouriteDTO>;
+                                            var uid = (int)ViewBag.Uid;
+
+                                            <div class="form-check my-2">
+                                                @if (f.Where(x => x.StoryId == s.StoryId && x.UserId == uid).FirstOrDefault() != null)
+                                                {
+                                                    <input class="form-check-input" type="checkbox" data-story-id="@s.StoryId" id="favorite-checkbox-@s.StoryId" checked>
+                                                    <label class="form-check-label text-white" for="favorite-checkbox-@s.StoryId">
+                                                        Delete to Favorites
+                                                    </label>
+                                                }
+                                                else
+                                                {
+                                                    <input class="form-check-input" type="checkbox" data-story-id="@s.StoryId" id="favorite-checkbox-@s.StoryId">
+                                                    <label class="form-check-label text-white" for="favorite-checkbox-@s.StoryId">
+                                                        Add to Favorites
+                                                    </label>
+                                                }
+                                            </div>
+                                        }
+                                        <h5><a href="#">@s.Title - @s.AuthorName</a></h5>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-8">
+                <div class="product__sidebar">
+                    <div class="product__sidebar__view">
+                        <div class="section-title">
+                            <h5>Top Views</h5>
+                        </div>
+                        <ul class="filter__controls">
+                            <li class="active" data-filter=".day">Day</li>
+                            <li data-filter=".week">Week</li>
+                            <li data-filter=".month">Month</li>
+                            <li data-filter=".years">Years</li>
+                        </ul>
+                        <div class="filter__gallery">
+                            @if (topViewDay != null)
+                            {
+                                @foreach (var story in topViewDay)
+                                {
+                                    <div class="product__sidebar__view__item set-bg mix day"
+                                 data-setbg="@story.ImageStory">
+                                        <div class="ep">@story.ListOfChapter.Count / ?</div>
+                                        <div class="view"><i class="fa fa-eye"></i> @story.View</div>
+                                        <h5><a href="#">@story.Title - @story.AuthorName</a></h5>
+                                    </div>
+                                }
+                            }
+
+                            @if (topViewWeek != null)
+                            {
+                                @foreach (var story in topViewWeek)
+                                {
+                                    <div class="product__sidebar__view__item set-bg mix week"
+                                 data-setbg="@story.ImageStory">
+                                        <div class="ep">@story.ListOfChapter.Count / ?</div>
+                                        <div class="view"><i class="fa fa-eye"></i> @story.View</div>
+                                        <h5><a href="#">@story.Title - @story.AuthorName</a></h5>
+                                    </div>
+                                }
+                            }
+                            @if (topViewMonth != null)
+                            {
+                                @foreach (var story in topViewMonth)
+                                {
+                                    <div class="product__sidebar__view__item set-bg mix month"
+                                 data-setbg="@story.ImageStory">
+                                        <div class="ep">@story.ListOfChapter.Count / ?</div>
+                                        <div class="view"><i class="fa fa-eye"></i> @story.View</div>
+                                        <h5><a href="#">@story.Title - @story.AuthorName</a></h5>
+                                    </div>
+                                }
+                            }
+                            @if (topViewYear != null)
+                            {
+                                @foreach (var story in topViewYear)
+                                {
+                                    <div class="product__sidebar__view__item set-bg mix years"
+                                 data-setbg="@story.ImageStory">
+                                        <div class="ep">@story.ListOfChapter.Count / ?</div>
+                                        <div class="view"><i class="fa fa-eye"></i> @story.View</div>
+                                        <h5><a href="#">@story.Title - @story.AuthorName</a></h5>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->

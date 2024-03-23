@@ -1,0 +1,98 @@
+﻿@{
+    ViewData["Title"] = "Edit Manga";
+    var listCategory = (List<CategoryDTO>)ViewData["listCategory"];
+}
+@model ObjectModel.Dtos.StoryDTO
+@using ObjectModel.Dtos
+
+<section class="anime-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex text-white">
+                    <div class="p-2">
+                        <h3>Edit Manga</h3>
+                    </div>
+                </div>
+            </div>
+            <form asp-action="MangaEdit" enctype="multipart/form-data">
+                <div class="container border p-3">
+                    <div class="row">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-2 text-white">
+                            <label asp-for="StoryId" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input type="text" asp-for="StoryId" class="form-control" readonly />
+                            <span asp-validation-for="StoryId" class="text-danger"></span>
+                        </div>
+                        <div class="col-2 text-white">
+                            <label asp-for="Title" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input type="text" asp-for="Title" class="form-control" readonly />
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                        <div class="col-2 text-white">
+                            <label asp-for="AuthorName" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input type="text" asp-for="AuthorName" class="form-control" />
+                            <span asp-validation-for="AuthorName" class="text-danger"></span>
+                        </div>
+                        <div class="col-2 text-white">
+                            <label asp-for="ListOfCategory" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3 text-white">
+                            <div class="row">
+                                @for (int i = 0; i < listCategory.Count; i++)
+                                {
+                                    <div class="col-2">
+                                        <label style="font-size:20px;">@listCategory[i].CategoryName</label>
+                                    </div>
+                                    <div class="col-2">
+                                        <input type="checkbox" asp-for="ListOfCheckedCategory[i]" class="form-control" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-2 text-white">
+                            <label asp-for="Content" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input asp-for="Content" class="form-control" />
+                            <span asp-validation-for="Content" class="text-danger"></span>
+                        </div>
+                        <div class="col-2 text-white">
+                            <label asp-for="FileHeader" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-2 pb-3">
+                            <img width="200px" src="@(Model.ImageStory)" alt="image" />
+                            <input type="hidden" asp-for="ImageStory" class="form-control" />
+                        </div>
+                        <div class="col-8 pb-3">
+                            <input type="file" asp-for="FileHeader" class="form-control" />
+                            <span asp-validation-for="FileHeader" class="text-danger"></span>
+                        </div>
+                        <div class="col-2 text-white">
+                            <label asp-for="IsActive" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-1 pb-3">
+                            <input type="checkbox" asp-for="IsActive" class="form-control" />
+                            <span asp-validation-for="IsActive" class="text-danger"></span>
+                        </div>
+                        <div class="col-9 pb-3">
+                        </div>
+                        <div class="col-5 offset-2">
+                            <a asp-action="MangaIndex" class="btn-primary btn form-control ">Back to List</a>
+                        </div>
+                        <div class="col-5">
+                            <input type="submit" value="Edit" class="btn btn-success form-control" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Edit User";
+}
+@model ObjectModel.Dtos.UserDTO
+
+<section class="anime-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="d-flex text-white">
+                    <div class="p-2">
+                        <h3>Create User</h3>
+                    </div>
+                </div>
+            </div>
+            <form asp-action="UserEdit" enctype="multipart/form-data">
+                <div class="container border p-3">
+                    <div class="row text-white">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="col-2">
+                            <label asp-for="UserId" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input type="text" asp-for="UserId" class="form-control" readonly />
+                            <span asp-validation-for="UserId" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="FullName" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input type="text" asp-for="FullName" class="form-control" />
+                            <span asp-validation-for="FullName" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="UserName" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-10 pb-3">
+                            <input type="text" asp-for="UserName" class="form-control" />
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="File" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-2 pb-3">
+                            <img width="200px" src="@(Model.ImageUser)" alt="image" />
+                            <input type="hidden" asp-for="ImageUser" class="form-control" />
+                        </div>
+                        <input type="hidden" asp-for="Email" class="form-control" />
+                        <input type="hidden" asp-for="Password" class="form-control" />
+                        <div class="col-8 pb-3">
+                            <input type="file" asp-for="File" class="form-control" />
+                            <span asp-validation-for="File" class="text-danger"></span>
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="IsMale" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-1 pb-3">
+                            <input type="checkbox" asp-for="IsMale" class="form-control" />
+                            <span asp-validation-for="IsMale" class="text-danger"></span>
+                        </div>
+                        <div class="col-9 pb-3">
+                        </div>
+                        <div class="col-2">
+                            <label asp-for="IsActive" class="control-label pt-2" style="font-size:20px;"></label>
+                        </div>
+                        <div class="col-1 pb-3">
+                            <input type="checkbox" asp-for="IsActive" class="form-control" />
+                            <span asp-validation-for="IsActive" class="text-danger"></span>
+                        </div>
+                        <div class="col-9 pb-3">
+                        </div>
+                        <div class="col-5 offset-2">
+                            <a asp-action="UserIndex" class="btn-primary btn form-control ">Back to List</a>
+                        </div>
+                        <div class="col-5">
+                            <input type="submit" value="Edit" class="btn btn-success form-control" />
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Anime Section End -->

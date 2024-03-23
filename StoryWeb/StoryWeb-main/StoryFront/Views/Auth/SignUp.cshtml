@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Sign Up";
+}
+@model ObjectModel.Dtos.UserDTO
+
+<script>
+    $(document).ready(function () {
+        $("#re-password").on(("input"), function () {
+            var pass = $("#password").val();
+            var repass = $("#re-password").val();
+            if (pass === repass) {
+                console.log("a");
+                $("#message").text("");
+                $("#submit").removeAttr("disabled");
+            } else {
+                console.log("b");
+                $("#submit").attr("disabled", "true");
+                var p = document.createElement("p");
+                $("#message").text("Your password and repassword must be same!");
+            }
+        });
+        $("#password").on(("input"), function () {
+            var pass = $("#password").val();
+            var repass = $("#re-password").val();
+            if (pass === repass) {
+                console.log("a");
+                $("#message").text("");
+                $("#submit").removeAttr("disabled");
+            } else {
+                console.log("b");
+                $("#submit").attr("disabled", "true");
+                var p = document.createElement("p");
+                $("#message").text("Your password and repassword must be same!");
+            }
+        });
+    });
+</script>
+
+<!-- Normal Breadcrumb Begin -->
+<section class="normal-breadcrumb set-bg" data-setbg="img/normal-breadcrumb.jpg">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="normal__breadcrumb__text">
+                    <h2>Sign Up</h2>
+                    <p>Welcome to the official Anime blog.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Normal Breadcrumb End -->
+<!-- Signup Section Begin -->
+<section class="signup spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login__form">
+                    <h3>Sign Up</h3>
+                    <form asp-action="SignUp" enctype="multipart/form-data">
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="text" asp-for="FullName" placeholder="FullName">
+                            <span class="icon_pencil"></span>
+                        </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="text" asp-for="UserName" placeholder="UserName">
+                            <span class="icon_pencil"></span>
+                        </div>
+                        <span asp-validation-for="File" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="file" asp-for="File">
+                            <span class="icon_image"></span>
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="email" asp-for="Email" placeholder="Email address">
+                            <span class="icon_mail"></span>
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="password" asp-for="Password" id="password" placeholder="Password">
+                            <span class="icon_lock"></span>
+                        </div>
+                        <span id="message" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="password" id="re-password" placeholder="Password">
+                            <span class="icon_lock"></span>
+                        </div>
+                        <span asp-validation-for="IsMale" class="text-danger"></span>
+                        <div class="input__item">
+                            <input type="checkbox" asp-for="IsMale" class="form-control" />
+                            <span class="icon_profile"></span>
+                        </div>
+                        <button type="submit" class="site-btn" id="submit" disabled>Sign Up Now</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login__register">
+                    <h3>Already have an account?</h3>
+                    <a asp-action="Login" class="primary-btn">Log In!</a>
+                </div>
+            </div>
+            @*<div class="col-lg-6">
+                    <div class="login__social__links">
+                        <h3>Login With:</h3>
+                        <ul>
+                            <li>
+                                <a href="#" class="facebook"><i class="fa fa-facebook"></i> Sign in With Facebook</a>
+                            </li>
+                            <li><a href="#" class="google"><i class="fa fa-google"></i> Sign in With Google</a></li>
+                            <li><a href="#" class="twitter"><i class="fa fa-twitter"></i> Sign in With Twitter</a></li>
+                        </ul>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</section>
+<!-- Signup Section End -->

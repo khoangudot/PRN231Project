@@ -1,0 +1,184 @@
+﻿@using ObjectModel.Dtos
+@{
+    ViewData["Title"] = "Manga Detail";
+    var manga = ViewBag.Manga as StoryDTO;
+    var comments = ViewBag.Comments as IEnumerable<CommentDTO>;
+    var userId = ViewBag.UserId;
+}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Home</a>
+                    <a href="#">Category</a>
+                    <span>Name Manga</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Anime Section Begin -->
+<section class="anime-details spad">
+    <div class="container">
+        <div class="anime__details__content">
+            <div class="row">
+                <div class="col-lg-3">
+                    <a asp-controller="Manga" asp-action="ReadingManga" asp-route-storyId="@manga.StoryId" asp-route-index="0">
+                        <div class="anime__details__pic set-bg" data-setbg="@manga.ImageStory">
+                            @*<div class="comment"><i class="fa fa-comments"></i> 11</div>*@
+                            <div class="view"><i class="fa fa-eye"></i> @manga.View</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-lg-9">
+                    <div class="anime__details__text">
+                        <div class="anime__details__title">
+                            <h3>@manga.Title</h3>
+                        </div>
+                        <p>
+                            @manga.Content
+                        </p>
+                        <div class="anime__details__widget">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <ul>
+                                        <li><span>Arthor:</span> @manga.AuthorName</li>
+                                        <li><span>Date aired:</span> @manga.CreateAt</li>
+                                        <li><span>Status:</span> @manga.IsActive</li>
+                                        <li>
+                                            <span>Genre:</span>
+                                            @{
+                                                var last = @manga.ListOfCategory.LastOrDefault();
+                                            }
+                                            @foreach (var item in manga.ListOfCategory)
+                                            {
+                                                @item.CategoryName
+
+
+                                                @if (!@item.CategoryName.Equals(last.CategoryName))
+                                                {
+                                                    <span>, </span>
+                                                }
+                                            }
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="anime__details__btn">
+                            @*<a href="#" class="follow-btn"><i class="fa fa-heart-o"></i> Follow</a>*@
+                            <a asp-controller="Manga" asp-action="ReadingManga" asp-route-storyId="@manga.StoryId" asp-route-chapterId="0" class="watch-btn">
+                                <span>Read Now</span> <i class="fa fa-angle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="anime__details__review">
+                    <div class="section-title">
+                        <h5>Reviews</h5>
+                    </div>
+                    @foreach (var c in comments)
+                    {
+                        <div class="anime__review__item">
+                            <div class="anime__review__item__pic">
+                                <img src="@c.Image" alt="">
+                            </div>
+                            <div class="anime__review__item__text">
+                                <h6>@c.UserName - <span>@c.CreatedAt</span></h6>
+                                <p>
+                                    @c.Content
+                                </p>
+                                <div class="row">
+
+                                    <div class="col-md-2">
+                                        <a href="#" class="reply-link" data-reply-id="@c.CommentId">Reply</a>
+                                    </div>
+                                    @if (userId != null)
+                                    {
+                                        @if (c.UserId == (int)userId)
+                                        {
+                                            <div class="col-md-2">
+                                                <a asp-action="DeleteComment" asp-controller="Comment" asp-route-detailId="@manga.StoryId" asp-route-commentId="@c.CommentId">Delete</a>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+
+                                <div class="anime__details__form reply-form my-2" style="display: none;" data-reply-id="@c.CommentId">
+                                    <form asp-action="AddReply" asp-controller="Comment" method="post">
+                                        <input type="hidden" value="@manga.StoryId" name="StoryId" />
+                                        <input type="hidden" value="@c.CommentId" name="ParentCommentId" />
+                                        <textarea name="Content" placeholder="Your Reply"></textarea>
+                                        <button style="margin-bottom: 20px;" type="submit"><i class="fa fa-location-arrow"></i> Reply</button>
+                                    </form>
+                                </div>
+
+                                @foreach (var r in c.ListReplies as IEnumerable<ReplyDTO>)
+                                {
+                                    <div class="child-comments" style="margin-top: 40px;">
+                                        <div class="anime__review__item">
+                                            <div class="anime__review__item__pic">
+                                                <img src="@r.Image" alt="">
+                                            </div>
+                                            <div class="anime__review__item__text">
+                                                <h6>@r.UserName - <span>@r.CreatedAt</span></h6>
+                                                <p> @r.Content</p>
+                                                @if (userId != null)
+                                                {
+                                                    @if (r.CommentId == (int)userId)
+                                                    {
+                                                        <div class="col-md-2">
+                                                            <a asp-action="DeleteComment" asp-controller="Comment" asp-route-detailId="@manga.StoryId" asp-route-commentId="@r.CommentId">Delete</a>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="anime__details__form">
+                    <div class="section-title">
+                        <h5>Your Comment</h5>
+                    </div>
+                    <form asp-action="AddComment" asp-controller="Comment" method="post">
+                        <input type="hidden" value="@manga.StoryId" name="StoryId" />
+                        <textarea name="Content" placeholder="Your Comment"></textarea>
+                        <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Anime Section End -->
+<script>
+   const replyLinks = document.querySelectorAll('.reply-link');
+
+    replyLinks.forEach((replyLink) => {
+        replyLink.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const replyId = replyLink.dataset.replyId;
+            const replyForm = document.querySelector(`.reply-form[data-reply-id="${replyId}"]`);
+
+            const allReplyForms = document.querySelectorAll('.reply-form');
+            allReplyForms.forEach(form => {
+                form.style.display = 'none';
+            });
+
+            replyForm.style.display = 'block';
+        });
+    });
+</script>

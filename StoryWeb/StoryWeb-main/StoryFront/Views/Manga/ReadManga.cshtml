@@ -1,0 +1,112 @@
+﻿@using ObjectModel.Dtos
+@{
+    ViewData["Title"] = "Read Manga";
+    var story = ViewBag.StoryDetail as StoryDTO;
+    var chapter = ViewBag.Chapter as ChapterDTO;
+}
+
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i> Home</a>
+                    <a href="#">Category</a>
+                    <span>@story.Title</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Anime Section Begin -->
+<section class="anime-details spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="anime__details__episodes sticky-top text-black h-auto">
+                    <div class="d-flex justify-content-center">
+                        @if (1 < ViewBag.Index)
+                        {
+                            <div class="ml-auto">
+                                <a asp-controller="Manga" asp-action="ReadingManga" asp-route-storyId="@ViewBag.StoryDetail.StoryId" asp-route-index="@(ViewBag.Index - 1)" class="bg-danger">
+                                    <span class="arrow_carrot-left"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="ml-auto"></div>
+                        }
+                        <div class="mx-auto" style="width: 500px">
+                            <form id="filter" asp-controller="Manga" asp-action="ReadingManga" method="get">
+                                <input type="hidden" name="storyId" value="@story.StoryId" />
+                                <select name="index" class="form-select w-100" id="optionSelect" onchange="this.form.submit()">
+                                    @foreach (var item in story.ListOfChapter)
+                                    {
+                                        <option value="@item.Index" selected='@((@item.Index == (int) ViewBag.Index)?"selected":null)'>Chapter @item.Index</option>
+                                    }
+                                </select>
+                            </form>
+
+                            @*<form id="filter" method="get" action="/Manga/ReadingManga">
+            <select class="form-select w-100" id="optionSelect" onchange="navigateToLink()">
+            <input type="hidden" name="storyId" value="@story.StoryId" />
+            <select name="chapterId" class="form-select w-100" id="optionSelect">
+            @foreach (var item in story.ListOfChapter)
+            {
+            <option value="@item.ChapterId" selected='@((@item.ChapterId == (int) ViewBag.ChapterId)?"selected":null)'>Chapter @item.Index</option>
+            }
+            </select>
+            </form>*@
+                        </div>
+                        @if (story.ListOfChapter.Count > ViewBag.Index)
+                        {
+                            <div class="mr-auto">
+                                <a asp-controller="Manga" asp-action="ReadingManga" asp-route-storyId="@ViewBag.StoryDetail.StoryId" asp-route-index="@(ViewBag.Index + 1)" class="bg-danger">
+                                    <span class="arrow_carrot-right"></span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="ml-auto"></div>
+                        }
+                    </div>
+                </div>
+                <div class="anime__image__player">
+                    <div class="row justify-content-center">
+                        @foreach (var item in chapter.ListOfImage)
+                        {
+                            <div class="col-auto">
+                                <img src="@item.ImageChapter"
+                                 alt="image" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    //function navigateToLink() {
+    //    var selectElement = document.getElementById("optionSelect");
+    //    var selectedValue = selectElement.value;
+
+    //    if (selectedValue) {
+    //        window.location.href = selectedValue;
+    //    }
+
+    //var selectElement = document.getElementById("optionSelect");
+
+    //selectElement.addEventListener("change", function() {
+    //    var formElement = document.getElementById("filter");
+    //    formElement.submit();
+    //});
+    //            }
+
+    </script>
+<!-- Anime Section End -->

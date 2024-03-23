@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "List Chapter";
+}
+@model IEnumerable<ObjectModel.Dtos.ChapterDTO>
+
+
+    <section class="product-page spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="d-flex text-white">
+                        <div class="p-2">
+                            <h3>Chapters List</h3>
+                        </div>
+                        <div class="ml-auto p-2">
+                            <a asp-action="ChapterCreate" asp-route-storyId="@Model.FirstOrDefault().StoryId" class="btn btn-outline-success">
+                                Create New Chapter
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped table-bordered table-dark text-white">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Id</th>
+                            <th>Index</th>
+                            <th>View</th>
+                            <th>CreateAt</th>
+                            <th>Source Image</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var chapter in Model)
+                        {
+                            <tr>
+                                <td width="50">@chapter.ChapterId</td>
+                                <td width="50">@chapter.Index</td>
+                                <th width="50">@chapter.View</th>
+                                <th width="100">@chapter.CreateAt</th>
+                                <th>
+                                    @foreach (var image in chapter.ListOfImage)
+                                    {
+                                        <p>@image.ImageChapter</p>
+                                    }   
+                                </th>
+                                <td width="100">
+                                    <a asp-action="ChapterDelete" asp-route-chapterId="@chapter.ChapterId" asp-route-storyId="@chapter.StoryId" class="btn btn-outline-danger btn-sm">
+                                        <span class="icon_trash"></span> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="col-6 offset-3">
+                    <a asp-action="MangaIndex" asp-controller="MangaManagement" class="btn-primary btn form-control ">Back to list of Story</a>
+                </div>
+                <div class="col-6"></div>
+            </div>
+        </div>
+    </section>

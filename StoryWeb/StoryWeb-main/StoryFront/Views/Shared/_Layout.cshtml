@@ -1,0 +1,234 @@
+﻿@inject IHttpContextAccessor httpContextAccessor
+@using System.IdentityModel.Tokens.Jwt;
+@using ObjectModel.Dtos
+
+@{
+    var token = httpContextAccessor.HttpContext.Session.GetString("token");
+    string role = "";
+    if (token != null)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+        role = jwtSecurityToken.Claims.FirstOrDefault(c => c.Type == "Role")?.Value;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="Anime Template" />
+    <meta name="keywords" content="Anime, unica, creative, html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>@ViewData["Title"] - Manga</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet" />
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="../css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="../css/elegant-icons.css" type="text/css" />
+    <link rel="stylesheet" href="../css/plyr.css" type="text/css" />
+    <link rel="stylesheet" href="../css/nice-select.css" type="text/css" />
+    <link rel="stylesheet" href="../css/owl.carousel.min.css" type="text/css" />
+    <link rel="stylesheet" href="../css/slicknav.min.css" type="text/css" />
+    <link rel="stylesheet" href="../css/style.css" type="text/css" />
+    <script src="../js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="header__logo">
+                        <a href="./index.html">
+                            <img src="../img/logo.png" alt="" />
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="header__nav">
+                        <nav class="header__menu mobile-menu">
+                            <ul>
+                                <li class="@(ViewData["Title"] == "Home" ? "active" : "")"><a asp-controller="Home" asp-action="Index">Homepage</a></li>
+                                @if (token == null)
+                                {
+                                    <li class="@(ViewData["Title"] == "Search" ? "active" : "")">
+                                        @{
+                                            var categories = ViewBag.Categories as IEnumerable<CategoryDTO>;
+                                        }
+                                        <a href="#">Categories <span class="arrow_carrot-down"></span></a>
+                                        <ul class="dropdown">
+                                            @foreach (var c in categories)
+                                            {
+                                                <li><a asp-controller="Manga" asp-action="SearchManga" asp-route-categoryId="@c.CategoryId">@c.CategoryName</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li class="@(ViewData["Title"] == "Sign Up" ? "active" : "")"><a asp-controller="Auth" asp-action="SignUp">Sign Up</a></li>
+                                    <li class="@(ViewData["Title"] == "Login" ? "active" : "")"><a asp-controller="Auth" asp-action="Login">Login</a></li>
+                                }
+                                else
+                                {
+                                    @if (role == "1")
+                                    {
+                                        <li class="@(ViewData["Title"] == "List Manga" ? "active" : "")"><a asp-controller="MangaManagement" asp-action="MangaIndex">Manage Story</a></li>
+                                        <li class="@(ViewData["Title"] == "List User" ? "active" : "")"><a asp-controller="UserManagement" asp-action="UserIndex">Manage User</a></li>
+                                    }
+                                    else
+                                    {
+
+                                        <li class="">
+                                            <a href="#"> Information <span class="arrow_carrot-down"></span></a>
+                                            <ul class="dropdown">
+                                                <li><a asp-controller="User" asp-action="Profile">Profile</a></li>
+                                                <li><a asp-controller="User" asp-action="ChangePasswordView">Change Password</a></li>
+                                                <li><a asp-controller="Favourite" asp-action="GetFavourites">Favourites</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="@(ViewData["Title"] == "Search" ? "active" : "")">
+                                            @{
+                                                var categories = ViewBag.Categories as IEnumerable<CategoryDTO>;
+                                            }
+                                            <a href="#">Categories <span class="arrow_carrot-down"></span></a>
+                                            <ul class="dropdown">
+                                                @foreach (var c in categories)
+                                                {
+                                                    <li><a asp-controller="Manga" asp-action="SearchManga" asp-route-categoryId="@c.CategoryId">@c.CategoryName</a></li>
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                    <li><a asp-controller="Auth" asp-action="Logout">Logout</a></li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <div class="header__right">
+                        <a href="#" class="search-switch">
+                            <span class="icon_search"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="mobile-menu-wrap"></div>
+        </div>
+    </header>
+    <!-- Header End -->
+    @RenderBody()
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="page-up">
+            <a href="#" id="scrollToTopButton">
+                <span class="arrow_carrot-up"></span>
+            </a>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="footer__logo">
+                        <a href="./index.html"><img src="../img/logo.png" alt="" /></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer__nav">
+                        <ul>
+                            <li class="active"><a asp-controller="Home" asp-action="Index">Homepage</a></li>
+                            <li><a asp-controller="Manga" asp-action="SearchManga">Categories</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <p>
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script>
+                        All rights reserved | This template is made with
+                        <i class="fa fa-heart" aria-hidden="true"></i> by
+                        <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+    <!-- Search model Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch"><i class="icon_close"></i></div>
+            <form class="search-model-form" asp-action="Search" asp-controller="Manga">
+                <input type="text" name="search" id="search-input" placeholder="Search here....." />
+            </form>
+        </div>
+    </div>
+    <!-- Search model end -->
+    <!-- Js Plugins -->
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/player.js"></script>
+    <script src="../js/jquery.nice-select.min.js"></script>
+    <script src="../js/mixitup.min.js"></script>
+    <script src="../js/jquery.slicknav.js"></script>
+    <script src="../js/owl.carousel.min.js"></script>
+    <script src="../js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function addToFavorites(storyId) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddFavourite", "Favourite")',
+                data: { storyId: storyId },
+                success: function(result) {
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        console.log('Failed to add.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error : ' + error);
+                }
+            });
+        }
+
+        function deleteFromFavorites(storyId) {
+            $.ajax({
+                type: 'DELETE',
+                url: '@Url.Action("DeleteFavourite", "Favourite")',
+                data: { storyId: storyId },
+                success: function(result) {
+                    if (result.success) {
+                        location.reload();
+                    } else {
+                        console.log('Failed to remove.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error : ' + error);
+                }
+            });
+        }
+
+        $(document).on('change', '.form-check-input', function() {
+            var storyId = $(this).data('story-id');
+            if ($(this).is(':checked')) {
+                addToFavorites(storyId);
+            } else {
+                deleteFromFavorites(storyId);
+            }
+        });
+    </script>
+</body>
+</html>
+

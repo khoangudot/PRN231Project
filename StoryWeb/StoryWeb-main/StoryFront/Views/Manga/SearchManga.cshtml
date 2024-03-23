@@ -1,0 +1,129 @@
+﻿@inject IHttpContextAccessor httpContextAccessor
+@using ObjectModel.Dtos
+@{
+    ViewData["Title"] = "Search";
+}
+@{
+    var stories = ViewBag.Stories as IEnumerable<StoryDTO>;
+    var value = (string)ViewBag.ValueSearh;
+}
+<!-- Breadcrumb Begin -->
+<div class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__links">
+                    <a asp-controller="Home" asp-action="Index"><i class="fa fa-home"></i>Home</a>
+                    @if (value == null)
+                    {
+                        <a href="#">Category</a>
+                        <span>@stories.FirstOrDefault().ListOfCategory.FirstOrDefault().CategoryName</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Product Section Begin -->
+<section class="product-page spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product__page__content">
+                    <div class="product__page__title">
+                        <div class="row">
+                            <div class="col-lg-8 col-md-8 col-sm-6">
+                                @if (value == null)
+                                {
+                                    <div class="section-title">
+                                        <h4>@stories.FirstOrDefault().ListOfCategory.FirstOrDefault().CategoryName</h4>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="section-title">
+                                        <h4>Search Results For ' <span class="text-danger">@value</span> '</h4>
+                                    </div>
+                                }
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                @*<div class="product__page__filter">
+                                <p>Order by:</p>
+                                <select>
+                                <option value="">A-Z</option>
+                                <option value="">1-10</option>
+                                <option value="">10-50</option>
+                                </select>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @if (stories.Any())
+                        {
+                            @foreach (var item in stories)
+                            {
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    <div class="product__item">
+                                        <a asp-controller="Manga" asp-action="MangaDetail" asp-route-storyId="@item.StoryId">
+                                            <div class="product__item__pic set-bg" data-setbg="@item.ImageStory">
+                                                <div class="ep">@item.ListOfChapter.Count / ?</div>
+                                                @*<div class="comment"><i class="fa fa-comments"></i> 11</div>*@
+                                                <div class="view"><i class="fa fa-eye"></i> @item.View</div>
+                                            </div>
+                                        </a>
+                                        <div class="product__item__text">
+                                            <ul>
+                                                <li>Active</li>
+                                                <li>Movie</li>
+                                            </ul>
+                                            @if (httpContextAccessor.HttpContext.Session.GetString("token") != null)
+                                            {
+                                                var f = ViewBag.Favourites as IEnumerable<FavouriteDTO>;
+                                                var uid = (int)ViewBag.Uid;
+
+                                                <div class="form-check my-2">
+                                                    @if (f.Where(x => x.StoryId == item.StoryId && x.UserId == uid).FirstOrDefault() != null)
+                                                    {
+                                                        <input class="form-check-input" type="checkbox" data-story-id="@item.StoryId" id="favorite-checkbox-@item.StoryId" checked>
+                                                        <label class="form-check-label text-white" for="favorite-checkbox-@item.StoryId">
+                                                            Delete to Favorites
+                                                        </label>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input class="form-check-input" type="checkbox" data-story-id="@item.StoryId" id="favorite-checkbox-@item.StoryId">
+                                                        <label class="form-check-label text-white" for="favorite-checkbox-@item.StoryId">
+                                                            Add to Favorites
+                                                        </label>
+                                                    }
+                                                </div>
+                                            }
+                                            <h5><a href="#">@item.Title</a></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="section-title">
+                                <h4><span class="text-danger">Results Not Found</span></h4>
+                            </div>
+                        }
+                    </div>
+                </div>
+                @* <div class="product__pagination">
+                <a href="#" class="current-page">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">4</a>
+                <a href="#">5</a>
+                <a href="#"><i class="fa fa-angle-double-right"></i></a>
+                </div>*@
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
