@@ -1,28 +1,21 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Reflection;
-using Firebase.Storage;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using ObjectModel.Dtos;
 using StoryFront.Helpers;
-using StoryFront.Services;
 using StoryFront.Services.IServices;
 
 namespace StoryFront.Controllers
-{ 
-	public class MangaManagementController : Controller
-	{
+{
+    public class MangaManagementController : Controller
+    {
         private IStoryService _storyService;
         private ICategoryService _categoryService;
 
         public MangaManagementController(IStoryService storyService, ICategoryService categoryService)
-		{
+        {
             _storyService = storyService;
             _categoryService = categoryService;
-		}
+        }
 
         public async Task<IActionResult> MangaIndex()
         {
@@ -32,11 +25,12 @@ namespace StoryFront.Controllers
                 return NotFound();
             }
             List<StoryDTO> list = new();
-            var response = await _storyService.GetAllStorysAsync<ResponseDto>("");
+            var response = await _storyService.GetAllStorysAsync<ResponseDto>(token);
             if (response != null && response.IsSuccess)
             {
                 list = JsonConvert.DeserializeObject<List<StoryDTO>>(Convert.ToString(response.Result));
-            } else
+            }
+            else
             {
                 return NotFound();
             }
@@ -51,11 +45,12 @@ namespace StoryFront.Controllers
                 return NotFound();
             }
             List<CategoryDTO> listCategory = new();
-            var response = await _categoryService.GetAllCategoriesAsync<ResponseDto>("");
+            var response = await _categoryService.GetAllCategoriesAsync<ResponseDto>(token);
             if (response != null && response.IsSuccess)
             {
                 listCategory = JsonConvert.DeserializeObject<List<CategoryDTO>>(Convert.ToString(response.Result));
-            } else
+            }
+            else
             {
                 return NotFound();
             }
@@ -90,7 +85,7 @@ namespace StoryFront.Controllers
                 //    return NotFound();
                 //}
                 List<CategoryDTO> listCategory = new();
-                var responseGetCategory = await _categoryService.GetAllCategoriesAsync<ResponseDto>("");
+                var responseGetCategory = await _categoryService.GetAllCategoriesAsync<ResponseDto>(token);
                 if (responseGetCategory != null && responseGetCategory.IsSuccess)
                 {
                     listCategory = JsonConvert.DeserializeObject<List<CategoryDTO>>(Convert.ToString(responseGetCategory.Result));
@@ -134,11 +129,12 @@ namespace StoryFront.Controllers
                         storyDto.ListOfChapter[i].ListOfFile = null;
                     }
                 }
-                var response = await _storyService.CreateStoryAsync<ResponseDto>(storyDto, "");
+                var response = await _storyService.CreateStoryAsync<ResponseDto>(storyDto, token);
                 if (response != null && response.IsSuccess)
                 {
                     return RedirectToAction(nameof(MangaIndex));
-                } else
+                }
+                else
                 {
                     return NotFound();
                 }
@@ -154,17 +150,18 @@ namespace StoryFront.Controllers
                 return NotFound();
             }
             List<CategoryDTO> listCategory = new();
-            var response = await _categoryService.GetAllCategoriesAsync<ResponseDto>("");
+            var response = await _categoryService.GetAllCategoriesAsync<ResponseDto>(token);
             if (response != null && response.IsSuccess)
             {
                 listCategory = JsonConvert.DeserializeObject<List<CategoryDTO>>(Convert.ToString(response.Result));
-            } else
+            }
+            else
             {
                 return NotFound();
             }
             ViewData["listCategory"] = listCategory;
             StoryDTO model = new();
-            response = await _storyService.GetStoryByIdAsync<ResponseDto>(storyId, "");
+            response = await _storyService.GetStoryByIdAsync<ResponseDto>(storyId, token);
             if (response != null && response.IsSuccess)
             {
                 model = JsonConvert.DeserializeObject<StoryDTO>(Convert.ToString(response.Result));
@@ -174,13 +171,15 @@ namespace StoryFront.Controllers
                     if (model.ListOfCategory.Any(x => x.CategoryId == listCategory[i].CategoryId))
                     {
                         listCheckedCategory.Add(true);
-                    } else
+                    }
+                    else
                     {
                         listCheckedCategory.Add(false);
                     }
                 }
                 model.ListOfCheckedCategory = listCheckedCategory;
-            } else
+            }
+            else
             {
                 return NotFound();
             }
@@ -199,11 +198,12 @@ namespace StoryFront.Controllers
             if (ModelState.IsValid)
             {
                 List<CategoryDTO> listCategory = new();
-                var responseGetCategory = await _categoryService.GetAllCategoriesAsync<ResponseDto>("");
+                var responseGetCategory = await _categoryService.GetAllCategoriesAsync<ResponseDto>(token);
                 if (responseGetCategory != null && responseGetCategory.IsSuccess)
                 {
                     listCategory = JsonConvert.DeserializeObject<List<CategoryDTO>>(Convert.ToString(responseGetCategory.Result));
-                } else
+                }
+                else
                 {
                     return NotFound();
                 }
@@ -223,10 +223,10 @@ namespace StoryFront.Controllers
                 storyDto.ListOfCategory = listCategoryDto;
                 if (storyDto.FileHeader != null)
                 {
-                    await FirebaseService.EditImage(storyDto.FileHeader, storyDto.ImageStory ,storyDto.Title.Replace(" ", ""));
+                    await FirebaseService.EditImage(storyDto.FileHeader, storyDto.ImageStory, storyDto.Title.Replace(" ", ""));
                     storyDto.FileHeader = null;
                 }
-                var responseUpdateStory = await _storyService.UpdateStoryAsync<ResponseDto>(storyDto, "");
+                var responseUpdateStory = await _storyService.UpdateStoryAsync<ResponseDto>(storyDto, token);
                 if (responseUpdateStory != null && responseUpdateStory.IsSuccess)
                 {
                     return RedirectToAction(nameof(MangaIndex));
@@ -246,7 +246,7 @@ namespace StoryFront.Controllers
             {
                 return NotFound();
             }
-            var responseDeleteStory = await _storyService.DeleteStoryAsync<ResponseDto>(storyId, "");
+            var responseDeleteStory = await _storyService.DeleteStoryAsync<ResponseDto>(storyId, token);
             if (responseDeleteStory != null && responseDeleteStory.IsSuccess)
             {
                 return RedirectToAction(nameof(MangaIndex));

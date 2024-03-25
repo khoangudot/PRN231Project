@@ -26,10 +26,7 @@ namespace DataAccess.Repositories
 
         public async Task<IEnumerable<UserDTO>> GetUsers()
         {
-            IEnumerable<User> users = await _context.Users
-                                                    .Where(x => x.RoleId == 2)
-                                                    .OrderByDescending(x => x.UserId)
-                                                    .ToListAsync();
+            IEnumerable<User> users = await _context.Users.Where(x => x.RoleId == 2).OrderByDescending(x => x.UserId).ToListAsync();
             return _mapper.Map<List<UserDTO>>(users);
         }
 
@@ -41,8 +38,7 @@ namespace DataAccess.Repositories
 
         public async Task<UserDTO> GetUserByEmailAndPassword(string email, string password)
         {
-            User user = await _context.Users
-                .FirstOrDefaultAsync(x => x.Email == email && x.Password == password && x.IsActive == true);
+            User user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email && x.Password == password && x.IsActive == true);
             return _mapper.Map<UserDTO>(user);
         }
 
@@ -64,8 +60,7 @@ namespace DataAccess.Repositories
 
         public async Task<UserDTO> UpdateUser(UserDTO userDto)
         {
-            User oldUser = await _context.Users
-                .FirstOrDefaultAsync(x => x.RoleId == 2 && x.UserId == userDto.UserId);
+            User oldUser = await _context.Users.FirstOrDefaultAsync(x => x.RoleId == 2 && x.UserId == userDto.UserId);
             oldUser.FullName = userDto.FullName;
             oldUser.UserName = userDto.UserName;
             if (userDto.File != null)

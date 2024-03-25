@@ -49,11 +49,11 @@ public class HomeController : Controller
         var checkRespose = responseC.IsSuccess && response4.IsSuccess && response10.IsSuccess && responseTopViewDay.IsSuccess && responseTopViewWeek.IsSuccess && responseTopViewMonth.IsSuccess && responseTopViewYear.IsSuccess;
         if (checkRespose)
         {
-            var top4 = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(response4.Result));
-            var topViewDay = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewDay.Result));
-            var topViewWeek = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewWeek.Result));
-            var topViewMonth = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewMonth.Result));
-            var topViewYear = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewYear.Result));
+            var top4 = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(response4.Result)).Where(s=>s.IsActive);
+            var topViewDay = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewDay.Result)).Where(s => s.IsActive);
+            var topViewWeek = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewWeek.Result)).Where(s => s.IsActive);
+            var topViewMonth = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewMonth.Result)).Where(s => s.IsActive);
+            var topViewYear = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(responseTopViewYear.Result)).Where(s => s.IsActive).Where(s => s.IsActive);
             var top10 = JsonConvert.DeserializeObject<IEnumerable<StoryDTO>>(Convert.ToString(response10.Result));
             var categories = JsonConvert.DeserializeObject<IEnumerable<CategoryDTO>>(Convert.ToString(responseC.Result));
             ViewBag.Categories = categories;

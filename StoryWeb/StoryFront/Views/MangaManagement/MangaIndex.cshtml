@@ -63,9 +63,13 @@
                                 <a asp-action="MangaEdit" asp-route-storyId="@manga.StoryId" class="btn btn-outline-primary btn-sm">
                                     <span class="icon_pencil"></span> Edit
                                 </a>
-                                <a asp-action="MangaDelete" asp-route-storyId="@manga.StoryId" class="btn btn-outline-danger btn-sm">
-                                    <span class="icon_trash"></span> Delete
-                                </a>
+                                @if (manga.IsActive)
+                                {
+                                    <a asp-action="MangaDelete" asp-route-storyId="@manga.StoryId" class="btn btn-outline-danger btn-sm">
+                                        <span class="icon_trash"></span> Delete
+                                    </a>
+                                }
+                               
                             </td>
                         </tr>
                     }

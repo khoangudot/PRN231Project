@@ -89,8 +89,10 @@ namespace DataAccess.Repositories
         public async Task<StoryDTO> UpdateStory(StoryDTO storyDto)
         {
             Story oldStory = await _context.Stories.Include(x => x.StoryCategories).FirstOrDefaultAsync(x => x.StoryId == storyDto.StoryId);
+
             oldStory.AuthorName = storyDto.AuthorName;
             oldStory.Content = storyDto.Content;
+            oldStory.Title = storyDto.Title;
             oldStory.IsActive = storyDto.IsActive;
             var listCategory = new List<StoryCategory>();
             foreach (var cate in storyDto.ListOfCategory)

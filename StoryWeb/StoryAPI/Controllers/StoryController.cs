@@ -220,7 +220,7 @@ namespace StoryAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        [Authorize(Roles = "1")]    
+        [Authorize(Roles = "1")]
         public async Task<object> Delete(int id)
         {
             try

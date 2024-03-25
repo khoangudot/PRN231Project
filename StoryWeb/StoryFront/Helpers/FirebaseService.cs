@@ -24,9 +24,10 @@ namespace StoryFront.Helpers
             return uriBuilder.ToString();
         }
 
-        public async static Task EditImage(IFormFile file, string pathImage , params string[] folder)
+        public async static Task EditImage(IFormFile file, string pathImage, params string[] folder)
         {
-            UriBuilder uriBuilder = new UriBuilder(pathImage);
+            string correctedPathImage = pathImage.TrimEnd('/'); // Loại bỏ dấu '/' ở cuối đường dẫn
+            UriBuilder uriBuilder = new UriBuilder(correctedPathImage);
             Uri uri = uriBuilder.Uri;
             string nameImage = System.IO.Path.GetFileName(uri.LocalPath);
             FirebaseStorage storage = new FirebaseStorage("fir-react-87033.appspot.com");
@@ -36,6 +37,7 @@ namespace StoryFront.Helpers
                               .Child(nameImage)
                               .PutAsync(stream);
         }
+
 
         public async static Task DeleteImage(string pathImage, params string[] folder)
         {
